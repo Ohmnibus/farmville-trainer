@@ -1,0 +1,25 @@
+#summary Utilizzo del Plow-Seed-Delete Trick
+
+= Plow-Seed-Delete Trick =
+
+http://farmville-trainer.googlecode.com/svn/trunk/Farmville%20Trainer/FarmVille%20Trainer/Guida/trick02.png
+
+Il trucco del "dissoda-semina-cancella" permette di aumentare i punti esperienza in modo estremamente conveniente, con un rapporto di guadagno pari ad 1 punto ogni 10 monete. E' il sistema più conveniente.
+
+Per usare questo strumento i passi da seguire sono i seguenti:
+
+    * Impostare la larghezza ([Definizioni#Width_(larghezza) Width]) e l'altezza ([Definizioni#Height_(altezza) Height]) dell'area dove agire. Per questa operazione è sufficiente un area di 1x1;
+    * Selezionare la pagina e la posizione dei semi di soia (o del seme che a minor costo fornisce maggiori punti esperienza);
+    * Premere il pulsante Start.
+
+Da questo momento il processo si avvia in automatico dopo 5 secondi di inattività del mouse, per cui le operazioni che seguono possono essere eseguite con calma, purché il mouse venga tenuto in movimento.
+
+    * Passare al browser con la pagina di FarmVille;
+    * Avviare la visualizzazione a [Definizioni#Schermo_Intero Schermo Intero];
+    * Ridurre al [Definizioni#Zoom_al_Minimo minimo lo zoom];
+    * Posizionarsi in un'area libera;<br />http://farmville-trainer.googlecode.com/svn/trunk/Farmville%20Trainer/FarmVille%20Trainer/Guida/startpos03.png
+    * Attendere 5 secondi che il processo inizi automaticamente.
+
+Il processo inizia in automatico e va avanti indefinitamente finché non viene interrotto.
+
+Il processo può essere interrotto in ogni istante muovendo il mouse o passando all'applicazione FarmiVille Trainer.
