@@ -18,7 +18,7 @@ http://farmville-trainer.googlecode.com/svn/trunk/Farmville%20Trainer/FarmVille%
 
 == Exclusions (esclusioni) ==
 
-Le esclusioni sono un insieme di caselle sulle quale il programma non andrà agire. Queste caselle possono essere ad esempio occupate da elementi decorativi o dall'avatar. Le esclusioni vengono specificate da coppie di valori separati da virgola rappresentanti la coordinata secondo la larghezza (Width) e l'altezza (Height) dell'area dove agire. Ad esempio se nelle esclusioni viene specificato "1,3" verrà saltata la prima casella della terza riga. E' possibile specificare più di una eccezione separando le varie coppie di valori dal carattere "|", ad esempio "1,3|1,4|2,3|2,4"
+Le esclusioni sono un insieme di caselle sulle quale il programma non andrà agire. Queste caselle possono essere ad esempio occupate da elementi decorativi o dall'avatar. Le esclusioni vengono specificate da coppie di valori separati da virgola rappresentanti la coordinata secondo la larghezza ([Definizioni#Width_(larghezza) Width]) e l'altezza (Height) dell'area dove agire. Ad esempio se nelle esclusioni viene specificato "1,3" verrà saltata la prima casella della terza riga. E' possibile specificare più di una eccezione separando le varie coppie di valori dal carattere "|", ad esempio "1,3|1,4|2,3|2,4"
 
 ----
 
