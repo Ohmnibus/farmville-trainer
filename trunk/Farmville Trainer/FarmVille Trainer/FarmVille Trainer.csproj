@@ -102,6 +102,20 @@
     <None Include="Docs\FarmVille WideScreen.PNG" />
     <None Include="Docs\TileSizeRef.png" />
     <Content Include="FVT.ico" />
+    <Content Include="Guida\background.png" />
+    <Content Include="Guida\block.png" />
+    <Content Include="Guida\farmer.png" />
+    <Content Include="Guida\FarmVilleTrainerIT.html" />
+    <Content Include="Guida\fullscreen.png" />
+    <Content Include="Guida\startpos01.png" />
+    <Content Include="Guida\startpos02.png" />
+    <Content Include="Guida\startpos03.png" />
+    <Content Include="Guida\tiles.png" />
+    <Content Include="Guida\trick01.png" />
+    <Content Include="Guida\trick02.png" />
+    <Content Include="Guida\widthheight.png" />
+    <Content Include="Guida\zoomin.png" />
+    <Content Include="Guida\zoomout.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MouseKeyboardLibrary\MouseKeyboardLibrary.csproj">
