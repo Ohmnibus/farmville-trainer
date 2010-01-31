@@ -8,17 +8,17 @@ Questo strumento è un valido aiuto per le operazioni di mietitura, dissodatura 
 
 Per usare questo strumento i passi da seguire sono i seguenti:
 
-    * Impostare la larghezza (Width) e l'altezza (Height) dell'area dove agire;
-    * Specificare eventuali esclusioni (Exclusions);
-    * Selezionare la mietitura (Harvest), la dissodatura (Plow), la semina (Seed), o una combinazione dei 3.
+    * Impostare la larghezza ([Definizioni#Width_(larghezza) Width]) e l'altezza ([Definizioni#Height_(altezza) Height]) dell'area dove agire;
+    * Specificare eventuali esclusioni ([Definizioni#Exclusions_(esclusioni) Exclusions]);
+    * Selezionare la mietitura ([Definizioni#Harvest_(mietitura) Harvest]), la dissodatura ([Definizioni#Plow_(dissodatura) Plow]), la semina ([Definizioni#Seed_(semina) Seed]), o una combinazione dei 3.
     * Se è specificata la semina, selezionare la pagina e la posizione del seme;
     * Premere il pulsante Start.
 
 Da questo momento il processo si avvia in automatico dopo 5 secondi di inattività del mouse, per cui le operazioni che seguono possono essere eseguite con calma, purché il mouse venga tenuto in movimento.
 
     * Passare al browser con la pagina di FarmVille;
-    * Avviare la visualizzazione a Schermo Intero;
-    * Ridurre al minimo lo zoom;
+    * Avviare la visualizzazione a [Definizioni#Schermo_Intero Schermo Intero];
+    * Ridurre al [Definizioni#Zoom_al_Minimo minimo lo zoom];
     * Posizionarsi sulla casella che corrisponde alla coordinata 1,1 ossia quella che rappresenta l'angolo più in alto nello schermo;<br />http://farmville-trainer.googlecode.com/svn/trunk/Farmville%20Trainer/FarmVille%20Trainer/Guida/startpos01.png
     * Attendere 5 secondi che il processo inizi automaticamente.
 
