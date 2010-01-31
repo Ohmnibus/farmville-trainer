@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MouseKeyboardLibrary", "..\FarmVille Tools\MouseKeyboardLibrary\MouseKeyboardLibrary.csproj", "{BE99A41C-4B23-4B22-92FD-6CEC39AF56DD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FarmVille Trainer", "..\FarmVille Tools\FarmVille Trainer\FarmVille Trainer.csproj", "{8E56A09C-0640-443A-98D2-00629BD007CF}"
+EndProject
+Global
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BE99A41C-4B23-4B22-92FD-6CEC39AF56DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE99A41C-4B23-4B22-92FD-6CEC39AF56DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE99A41C-4B23-4B22-92FD-6CEC39AF56DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE99A41C-4B23-4B22-92FD-6CEC39AF56DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E56A09C-0640-443A-98D2-00629BD007CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E56A09C-0640-443A-98D2-00629BD007CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E56A09C-0640-443A-98D2-00629BD007CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E56A09C-0640-443A-98D2-00629BD007CF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
