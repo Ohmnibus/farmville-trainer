@@ -1,4 +1,4 @@
-#summary Introduzione a FarmVille Trainer
+#summary Pagina inizialle del manuale di FarmVille Trainer in italiano
 
 = FarmVille Trainer =
 http://farmville-trainer.googlecode.com/svn/trunk/Farmville%20Trainer/FarmVille%20Trainer/Guida/farmer.png
