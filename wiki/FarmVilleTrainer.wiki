@@ -1,0 +1,20 @@
+#summary Introduzione a FarmVille Trainer
+
+= Introduzione =
+
+FarmVille Trainer è un applicativo sviluppato per agevolare le operazioni frequenti per il browser game [http://farmville.com/ FarmVille].
+
+FarmVille Trainer è composto da 3 pratici strumenti: il Farmer Robot, l'Hay Bale Trick ed il Plow-Seed-Delete Trick.
+
+
+== Farmer Robot ==
+
+Permette di effettuare velocemente le operazioni di mietitura, dissodatura e semina in un'area di gioco arbitrariamente grande.
+
+== Hay Bale Trick ==
+
+Piccolo trucco per guadagnare punti esperienza velocemente spendendo monete.
+
+== Plow-Seed-Delete Trick ==
+
+Altro trucco per guadagnare punti esperienza spendendo monete. E' un po' più lento del precedente ma il rapporto spesa/guadagno è più favorevole.
