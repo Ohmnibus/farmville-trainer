@@ -1,0 +1,85 @@
+#summary Definizione di alcuni termini usati nella guida
+
+= Glossario =
+
+----
+
+== Bloccare l'Avatar ==
+
+L'avatar è il simpatico contadino che scorazza per il campo mietendo, dissodando e seminando all'impazzata.
+
+Per velocizzare FarmVille ma soprattutto per non essere di intralcio a FarmVille Trainer, è opportuno bloccare l'avatar tra 4 oggetti, come ad esempio 4 balle di fieno.
+
+E' pratica comune bloccare l'avatar al centro del campo, nella stessa posizione dove esso compare al caricamento del gioco, in modo da non doverlo bloccare intenzionalmente ogni volta.
+
+http://farmville-trainer.googlecode.com/svn/trunk/Farmville%20Trainer/FarmVille%20Trainer/Guida/block.png
+
+----
+
+== Exclusions (esclusioni) ==
+
+Le esclusioni sono un insieme di caselle sulle quale il programma non andrà agire. Queste caselle possono essere ad esempio occupate da elementi decorativi o dall'avatar. Le esclusioni vengono specificate da coppie di valori separati da virgola rappresentanti la coordinata secondo la larghezza (Width) e l'altezza (Height) dell'area dove agire. Ad esempio se nelle esclusioni viene specificato "1,3" verrà saltata la prima casella della terza riga. E' possibile specificare più di una eccezione separando le varie coppie di valori dal carattere "|", ad esempio "1,3|1,4|2,3|2,4"
+
+----
+
+== Harvest (mietitura) ==
+
+Questa operazione marca per la mietitura una casella di terreno occupata da un frutto maturo.
+
+Dopo la mietitura il terreno è pronto per essere dissodato (Plow).
+
+----
+
+== Height (altezza) ==
+
+Rappresenta l'altezza della porzione interessata, ossia la dimensione in termine di caselle secondo l'asse che parte da Nord-Est verso Sud-Ovest.
+
+http://farmville-trainer.googlecode.com/svn/trunk/Farmville%20Trainer/FarmVille%20Trainer/Guida/widthheight.png http://farmville-trainer.googlecode.com/svn/trunk/Farmville%20Trainer/FarmVille%20Trainer/Guida/tiles.png
+
+----
+
+== Plow (dissodatura) ==
+
+Questa operazione marca per la dissodatura un'area di terreno vuota o un'area di terreno dove è stato raccolto un frutto maturo (fallow land).
+
+Dopo la dissodatura il terreno è pronto per essere seminato (Seed).
+
+----
+
+== Schermo Intero ==
+
+La modalità Schermo Intero permette di visualizzare FarmVille a tutto schermo.
+
+http://farmville-trainer.googlecode.com/svn/trunk/Farmville%20Trainer/FarmVille%20Trainer/Guida/fullscreen.png
+
+----
+
+== Seed (semina) ==
+
+Questa operazione marca per la semina un'area di terreno dissodato (plowed land).
+
+Dopo la semina è necessario attendere due o più ore prima di poter raccogliere il frutto maturo.
+
+----
+
+== Width (larghezza) ==
+
+Rappresenta la larghezza della porzione interessata, ossia la dimensione in termine di caselle secondo l'asse che parte da Nord-Ovest verso Sud-Est.
+
+http://farmville-trainer.googlecode.com/svn/trunk/Farmville%20Trainer/FarmVille%20Trainer/Guida/widthheight.png http://farmville-trainer.googlecode.com/svn/trunk/Farmville%20Trainer/FarmVille%20Trainer/Guida/tiles.png
+
+----
+
+== Zoom al Massimo ==
+
+Impostare lo zoom al massimo significa ingrandire il più possibile il terreno di gioco in modo da vedere gli oggetti più grandi. L'effetto si ottiene premendo almeno 3 volte il tasto di ingrandimento.
+
+http://farmville-trainer.googlecode.com/svn/trunk/Farmville%20Trainer/FarmVille%20Trainer/Guida/zoomin.png
+
+----
+
+== Zoom al Minimo ==
+
+Impostare lo zoom al minimo significa rimpiccolire il più possibile il terreno di gioco in modo da vedere gli oggetti più piccoli. L'effetto si ottiene premendo almeno 3 volte il tasto di rimpiccolimento.
+
+http://farmville-trainer.googlecode.com/svn/trunk/Farmville%20Trainer/FarmVille%20Trainer/Guida/zoomout.png
