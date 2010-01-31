@@ -1,9 +1,5 @@
 #summary Definizione di alcuni termini usati nella guida
 
-= Glossario =
-
-----
-
 == Bloccare l'Avatar ==
 
 L'avatar è il simpatico contadino che scorazza per il campo mietendo, dissodando e seminando all'impazzata.
@@ -18,7 +14,7 @@ http://farmville-trainer.googlecode.com/svn/trunk/Farmville%20Trainer/FarmVille%
 
 == Exclusions (esclusioni) ==
 
-Le esclusioni sono un insieme di caselle sulle quale il programma non andrà agire. Queste caselle possono essere ad esempio occupate da elementi decorativi o dall'avatar. Le esclusioni vengono specificate da coppie di valori separati da virgola rappresentanti la coordinata secondo la larghezza ([Definizioni#Width_(larghezza) Width]) e l'altezza (Height) dell'area dove agire. Ad esempio se nelle esclusioni viene specificato "1,3" verrà saltata la prima casella della terza riga. E' possibile specificare più di una eccezione separando le varie coppie di valori dal carattere "|", ad esempio "1,3|1,4|2,3|2,4"
+Le esclusioni sono un insieme di caselle sulle quale il programma non andrà agire. Queste caselle possono essere ad esempio occupate da elementi decorativi o dall'avatar. Le esclusioni vengono specificate da coppie di valori separati da virgola rappresentanti la coordinata secondo la larghezza ([Definizioni#Width_(larghezza) Width]) e l'altezza ([Definizioni#Height_(altezza) Height]) dell'area dove agire. Ad esempio se nelle esclusioni viene specificato "1,3" verrà saltata la prima casella della terza riga. E' possibile specificare più di una eccezione separando le varie coppie di valori dal carattere "|", ad esempio "1,3|1,4|2,3|2,4"
 
 ----
 
@@ -26,7 +22,7 @@ Le esclusioni sono un insieme di caselle sulle quale il programma non andrà agi
 
 Questa operazione marca per la mietitura una casella di terreno occupata da un frutto maturo.
 
-Dopo la mietitura il terreno è pronto per essere dissodato (Plow).
+Dopo la mietitura il terreno è pronto per essere dissodato ([Definizioni#Plow_(dissodatura) Plow]).
 
 ----
 
@@ -42,7 +38,7 @@ http://farmville-trainer.googlecode.com/svn/trunk/Farmville%20Trainer/FarmVille%
 
 Questa operazione marca per la dissodatura un'area di terreno vuota o un'area di terreno dove è stato raccolto un frutto maturo (fallow land).
 
-Dopo la dissodatura il terreno è pronto per essere seminato (Seed).
+Dopo la dissodatura il terreno è pronto per essere seminato ([Definizioni#Seed_(semina) Seed]).
 
 ----
 
