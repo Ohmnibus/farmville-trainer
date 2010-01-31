@@ -1,5 +1,7 @@
 #summary Introduzione a FarmVille Trainer
 
+http://farmville-trainer.googlecode.com/svn/trunk/Farmville%20Trainer/FarmVille%20Trainer/Guida/farmer.png
+
 = Introduzione =
 
 FarmVille Trainer è un applicativo sviluppato per agevolare le operazioni frequenti per il browser game [http://farmville.com/ FarmVille].
@@ -18,3 +20,11 @@ Piccolo trucco per guadagnare punti esperienza velocemente spendendo monete.
 == [PlowSeedDeleteTrick Plow-Seed-Delete Trick] ==
 
 Altro trucco per guadagnare punti esperienza spendendo monete. E' un po' più lento del precedente ma il rapporto spesa/guadagno è più favorevole.
+
+== Consigli ==
+
+Per velocizzare il processo di mietitura, dissodamento e semina e per evitare che l'avatar interferisca col corretto funzionamento del programma, si consiglia di adottare la tecnica che consiste nel [Definizioni#Bloccare_l'Avatar bloccare l'avatar].
+
+Per il corretto funzionamento, durante tutta l'attività di FarmVille Trainer la modalità di visualizzazione di FarmVille dovrà essere a [Definizioni#Schermo_Intero schermo intero].
+
+FarmVille Trainer *non è attualmente in grado di intercettare finestre non desiderate*, per cui è opportuno controllare di tanto in tanto lo stato di andamento del programma, specialmente nei casi di operazioni continue come l'[HayBaleTrick Hay Bale Trick] ed il [PlowSeedDeleteTrick Plow-Seed-Delete Trick].
