@@ -75,7 +75,7 @@ namespace Ohm.FarmVille {
 			protected const int TOOL_GIFT = 5;
 
 			protected static Point[] _toolPlaces = new Point[] { 
-				new Point(900, 930), new Point(948, 930), new Point(996, 930),
+				new Point(900, 930), new Point(948, 930), new Point(900, 670), //Il "delete" era a 996, 930 ma è stato spostato nel sottomenù cursore
 				new Point(900, 988), new Point(948, 988), new Point(996, 988)
 			};
 
@@ -91,8 +91,8 @@ namespace Ohm.FarmVille {
 				new Point(328, 328), new Point(400, 328), new Point(500, 328), new Point(600, 328), new Point(700, 328), new Point(800, 328), new Point(938, 328)
 			};
 
-			protected static Size OffsetNextRight = new Size(25, 12);
-			protected static Size OffsetNextLeft = new Size(-25, 12);
+			protected static Size OffsetNextRight = new Size(20, 10); //12/05/2010: Cambio dimensioni da 25, 12 a 20, 10
+			protected static Size OffsetNextLeft = new Size(-20, 10); //12/05/2010: Cambio dimensioni da 25, 12 a 20, 10
 
 			protected static Size OffsetNextBaleRight = new Size(25, 12);
 			protected static Size OffsetNextBaleLeft = new Size(-25, 12);
@@ -275,6 +275,18 @@ namespace Ohm.FarmVille {
 
 				//Choose item
 				ClickAt(MarketItemPlace(marketItem - 1));
+			}
+
+			/// <summary>
+			/// Move to a given position and wait given amount of time.
+			/// </summary>
+			/// <param name="position">Position to click at.</param>
+			/// <param name="waitTime">Time to wait to, in milliseconds.</param>
+			protected void MoveAndWait(Point position, int waitTime) {
+				MouseSimulator.X = position.X;
+				MouseSimulator.Y = position.Y;
+
+				System.Threading.Thread.Sleep(waitTime);
 			}
 
 			/// <summary>
@@ -689,6 +701,7 @@ namespace Ohm.FarmVille {
 
 						if (Status == 4 && SubStatus == 0) {
 							//Select Delete Tool
+							MoveAndWait(ToolPlace(TOOL_CURSOR), DELAY_FAST);
 							ClickAndWait(ToolPlace(TOOL_DELETE), DELAY_FAST);
 						}
 
