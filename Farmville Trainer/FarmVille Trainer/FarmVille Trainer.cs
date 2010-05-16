@@ -91,8 +91,10 @@ namespace Ohm.FarmVille {
 				new Point(328, 328), new Point(400, 328), new Point(500, 328), new Point(600, 328), new Point(700, 328), new Point(800, 328), new Point(938, 328)
 			};
 
-			protected static Size OffsetNextRight = new Size(20, 10); //12/05/2010: Cambio dimensioni da 25, 12 a 20, 10
-			protected static Size OffsetNextLeft = new Size(-20, 10); //12/05/2010: Cambio dimensioni da 25, 12 a 20, 10
+			protected static Size OffsetNextRight = new Size(20, 9); //12/05/2010: Cambio dimensioni da 25, 12 a 20, 10
+			protected static Size SubOffsetNextRight = new Size(0, 6); //Decimi da aggiungere a OffsetNextRight
+			protected static Size OffsetNextLeft = new Size(-20, 9); //12/05/2010: Cambio dimensioni da 25, 12 a 20, 10
+			protected static Size SubOffsetNextLeft = new Size(0, 6); //Decimi da aggiungere a OffsetNextLeft
 
 			protected static Size OffsetNextBaleRight = new Size(25, 12);
 			protected static Size OffsetNextBaleLeft = new Size(-25, 12);
@@ -329,6 +331,19 @@ namespace Ohm.FarmVille {
 					(offsetRight.Height * tileIndex.X) + (offsetLeft.Height * tileIndex.Y));
 			}
 
+			/// <summary>
+			/// Get the offset of a tile.
+			/// </summary>
+			/// <param name="tilePos">Tile index.</param>
+			/// <param name="offsetRight">Offset for the right tile.</param>
+			/// <param name="offsetLeft">Offset for the left tile.</param>
+			/// <returns></returns>
+			protected Size GetTileOffset(Point tileIndex, Size offsetRight, Size offsetLeft, Size subOffsetRight, Size subOffsetLeft) {
+				return new Size(
+					(offsetRight.Width * tileIndex.X) + (int)(subOffsetRight.Width * tileIndex.X * 0.1) + (offsetLeft.Width * tileIndex.Y) + (int)(subOffsetLeft.Width * tileIndex.Y * 0.1),
+					(offsetRight.Height * tileIndex.X) + (int)(subOffsetRight.Height * tileIndex.X * 0.1) + (offsetLeft.Height * tileIndex.Y) + (int)(subOffsetLeft.Height * tileIndex.Y * 0.1));
+			}
+
 			#region Procedure errate di conversione coordinate
 			///// <summary>
 			///// Converte le coordinate considerando la differenza tra il monitor di riferimento al monitor attuale.
@@ -447,7 +462,8 @@ namespace Ohm.FarmVille {
 						}
 
 						if (!skip) {
-							ClickAt(StartingPoint + GetTileOffset(currTile, OffsetNextRight, OffsetNextLeft));
+							//ClickAt(StartingPoint + GetTileOffset(currTile, OffsetNextRight, OffsetNextLeft));
+							ClickAt(StartingPoint + GetTileOffset(currTile, OffsetNextRight, OffsetNextLeft, SubOffsetNextRight, SubOffsetNextLeft));
 						}
 
 						SubStatus++;
@@ -647,7 +663,8 @@ namespace Ohm.FarmVille {
 							SubStatus % (FieldSize.Width),
 							SubStatus / (FieldSize.Width));
 
-						ClickAt(StartingPoint + GetTileOffset(currTile, OffsetNextRight, OffsetNextLeft));
+						//ClickAt(StartingPoint + GetTileOffset(currTile, OffsetNextRight, OffsetNextLeft));
+						ClickAt(StartingPoint + GetTileOffset(currTile, OffsetNextRight, OffsetNextLeft, SubOffsetNextRight, SubOffsetNextLeft));
 
 						SubStatus++;
 
@@ -680,7 +697,8 @@ namespace Ohm.FarmVille {
 							SubStatus % (FieldSize.Width),
 							SubStatus / (FieldSize.Width));
 
-						ClickAt(StartingPoint + GetTileOffset(currTile, OffsetNextRight, OffsetNextLeft));
+						//ClickAt(StartingPoint + GetTileOffset(currTile, OffsetNextRight, OffsetNextLeft));
+						ClickAt(StartingPoint + GetTileOffset(currTile, OffsetNextRight, OffsetNextLeft, SubOffsetNextRight, SubOffsetNextLeft));
 
 						SubStatus++;
 
@@ -710,7 +728,8 @@ namespace Ohm.FarmVille {
 							SubStatus / (FieldSize.Width));
 
 						//Click su casella (delete)
-						ClickAndWait(StartingPoint + GetTileOffset(currTile, OffsetNextRight, OffsetNextLeft), DELAY_PREV_OP);
+						//ClickAndWait(StartingPoint + GetTileOffset(currTile, OffsetNextRight, OffsetNextLeft), DELAY_PREV_OP);
+						ClickAndWait(StartingPoint + GetTileOffset(currTile, OffsetNextRight, OffsetNextLeft, SubOffsetNextRight, SubOffsetNextLeft), DELAY_PREV_OP);
 
 						//Conferma cancellazione
 						ClickAt(ConfirmDeletePlace);
