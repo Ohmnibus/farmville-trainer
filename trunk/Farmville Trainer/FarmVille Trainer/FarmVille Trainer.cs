@@ -73,7 +73,7 @@ namespace Ohm.FarmVille {
 
 			protected const int TOOL_CURSOR = 0;
 			protected const int TOOL_PLOW = 1;
-			protected const int TOOL_DELETE = 2;
+			protected const int TOOL_COOP = 2;
 			protected const int TOOL_RIBBON = 3;
 			protected const int TOOL_MARKET = 4;
 			protected const int TOOL_GIFT = 5;
@@ -90,7 +90,7 @@ namespace Ohm.FarmVille {
 
 			protected static Point[] _toolPlaces = new Point[] { 
 				//Multi Tool, Plow Tool, Co-Op
-				new Point(900, 930), new Point(948, 930), new Point(900, 670), //Il "delete" era a 996, 930 ma è stato spostato nel sottomenù cursore
+				new Point(900, 930), new Point(948, 930), new Point(996, 930),
 				//Ribbons, Market, Gifts
 				new Point(900, 988), new Point(948, 988), new Point(996, 988)
 			};
@@ -158,8 +158,11 @@ namespace Ohm.FarmVille {
 				new Point(430, 761), new Point(567, 761), new Point(704, 761), new Point(841, 761)
 			};
 
-			protected static Point _confirmSellPlace = new Point(565, 605);
-			protected static Point _confirmDeletePlace = new Point(565, 605);
+			//protected static Point _confirmSellPlace = new Point(565, 605);
+			//protected static Point _confirmDeletePlace = new Point(565, 605);
+
+			protected static Point _checkDontWarnPlace = new Point(500, 545);
+			protected static Point _confirmRecyclePlace = new Point(565, 615);
 
 			#endregion
 
@@ -175,21 +178,49 @@ namespace Ohm.FarmVille {
 
 			#region Proprietà private/protette
 
+			//protected Point ConfirmSellPlace {
+			//    get {
+			//        return _confirmSellPlace + midMod;
+			//    }
+			//}
+
+			//protected Point ConfirmDeletePlace {
+			//    get {
+			//        return _confirmDeletePlace + midMod;
+			//    }
+			//}
+
+			protected Point CheckBoxDontWarnOnRecycle {
+				get {
+					return _checkDontWarnPlace + midMod;
+				}
+			}
+
+			protected Point ConfirmRecyclePlace {
+				get {
+					return _confirmRecyclePlace + midMod;
+				}
+			}
+
+			protected Point ToolPlace(int tool) {
+				return _toolPlaces[tool] + botMod;
+			}
+
+			protected Point ToolSubPlace(int tool, int subTool) {
+				return _toolSubPlaces[tool][subTool] + botMod;
+			}
+
+			protected Point MarketTypePlace(int marketType) {
+				return _marketTypePlaces[marketType] + midMod;
+			}
+
+			protected Point MarketItemPlace(int marketItem) {
+				return _marketItemPlaces[marketItem] + midMod;
+			}
+
 			protected Point MarketNextPagePlace {
 				get {
 					return _marketNextPagePlace + midMod;
-				}
-			}
-
-			protected Point ConfirmSellPlace {
-				get {
-					return _confirmSellPlace + midMod;
-				}
-			}
-
-			protected Point ConfirmDeletePlace {
-				get {
-					return _confirmDeletePlace + midMod;
 				}
 			}
 
@@ -287,22 +318,6 @@ namespace Ohm.FarmVille {
 
 			#region Private and protected method
 
-			protected Point ToolPlace(int tool) {
-				return _toolPlaces[tool] + botMod;
-			}
-
-			protected Point ToolSubPlace(int tool, int subTool) {
-				return _toolSubPlaces[tool][subTool] + botMod;
-			}
-
-			protected Point MarketTypePlace(int marketType) {
-				return _marketTypePlaces[marketType] + midMod;
-			}
-
-			protected Point MarketItemPlace(int marketItem) {
-				return _marketItemPlaces[marketItem] + midMod;
-			}
-
 			/// <summary>
 			/// Choose a Market Item.
 			/// </summary>
@@ -316,7 +331,7 @@ namespace Ohm.FarmVille {
 					SelectSubTool(TOOL_PLOW, SUBTOOL_PLOW_SEEDER);
 
 					//Wait for the market to open
-					System.Threading.Thread.Sleep(DELAY_STD_OP);
+					Wait(DELAY_STD_OP);
 				} else {
 					//Open market
 					ClickAndWait(ToolPlace(TOOL_MARKET), DELAY_STD_OP);
@@ -340,6 +355,14 @@ namespace Ohm.FarmVille {
 			}
 
 			/// <summary>
+			/// Wait given amount of time.
+			/// </summary>
+			/// <param name="waitTime">Time to wait to, in milliseconds.</param>
+			protected void Wait(int waitTime) {
+				System.Threading.Thread.Sleep(waitTime);
+			}
+
+			/// <summary>
 			/// Move to a given position and wait given amount of time.
 			/// </summary>
 			/// <param name="position">Position to click at.</param>
@@ -348,7 +371,7 @@ namespace Ohm.FarmVille {
 				MouseSimulator.X = position.X;
 				MouseSimulator.Y = position.Y;
 
-				System.Threading.Thread.Sleep(waitTime);
+				Wait(waitTime);
 			}
 
 			/// <summary>
@@ -359,7 +382,7 @@ namespace Ohm.FarmVille {
 			protected void ClickAndWait(Point position, int waitTime) {
 				ClickAt(position);
 
-				System.Threading.Thread.Sleep(waitTime);
+				Wait(waitTime);
 			}
 
 			/// <summary>
@@ -667,8 +690,9 @@ namespace Ohm.FarmVille {
 						MyTimer.Start();
 						break;
 					case 3:
-						//Select tool
-						ClickAndWait(ToolPlace(TOOL_CURSOR), DELAY_FAST);
+						////Select tool
+						//ClickAndWait(ToolPlace(TOOL_CURSOR), DELAY_FAST);
+						SelectSubTool(TOOL_CURSOR, SUBTOOL_CURSOR_RECYCLE);
 
 						//Passo alla fase successiva
 						Status = 4;
@@ -687,15 +711,24 @@ namespace Ohm.FarmVille {
 						//Click su balla
 						ClickAndWait(
 							StartingPoint + OffsetSelectBale + GetTileOffset(currTile, OffsetNextBaleRight, OffsetNextBaleLeft),
-							DELAY_FAST);
+							//DELAY_FAST);
+							DELAY_PREV_OP);
 
-						//Click su "Sell"
-						ClickAndWait(
-							StartingPoint + OffsetSelectBale + OffsetSell + GetTileOffset(currTile, OffsetNextBaleRight, OffsetNextBaleLeft),
-							DELAY_STD_OP);
+						////Click su "Sell"
+						//ClickAndWait(
+						//    StartingPoint + OffsetSelectBale + OffsetSell + GetTileOffset(currTile, OffsetNextBaleRight, OffsetNextBaleLeft),
+						//    //DELAY_STD_OP);
+						//    DELAY_PREV_OP);
 
-						//Conferma vendita
-						ClickAt(ConfirmSellPlace);
+						////Conferma vendita
+						//ClickAt(ConfirmSellPlace);
+
+						if (Status == 4 && SubStatus == 0) {
+							//Seleziono "Don't Warn on recycle"
+							ClickAndWait(CheckBoxDontWarnOnRecycle, DELAY_FAST);
+							//Convermo il riciclaggio
+							ClickAndWait(ConfirmRecyclePlace, DELAY_PREV_OP);
+						}
 
 						SubStatus++;
 
@@ -707,7 +740,8 @@ namespace Ohm.FarmVille {
 							SubStatus = 0;
 						}
 
-						MyTimer.Interval = DELAY_STD_OP; //Dò un pò di tempo extra al "sell"
+						//MyTimer.Interval = DELAY_STD_OP; //Dò un pò di tempo extra al "sell"
+						MyTimer.Interval = DELAY_NULL;
 						MyTimer.Start();
 						break;
 					default:
@@ -719,6 +753,8 @@ namespace Ohm.FarmVille {
 		}
 
 		public class PlowSeedDelete : BaseFarmer {
+
+			private Size plowOffset = new Size(0, -3);
 
 			/// <summary>
 			/// Width is for NO->SE (\) direction, Height for NE->SO (/) direction.
@@ -752,7 +788,8 @@ namespace Ohm.FarmVille {
 
 						if (Status == 1 && SubStatus == 0) {
 							//Select plow
-							ClickAndWait(ToolPlace(TOOL_PLOW), DELAY_FAST);
+							//ClickAndWait(ToolPlace(TOOL_PLOW), DELAY_FAST);
+							SelectSubTool(TOOL_PLOW, SUBTOOL_PLOW_PLOW);
 						}
 
 						currTile = new Point(
@@ -794,7 +831,7 @@ namespace Ohm.FarmVille {
 							SubStatus / (FieldSize.Width));
 
 						//ClickAt(StartingPoint + GetTileOffset(currTile, OffsetNextRight, OffsetNextLeft));
-						ClickAt(StartingPoint + GetTileOffset(currTile, OffsetNextRight, OffsetNextLeft, SubOffsetNextRight, SubOffsetNextLeft));
+						ClickAt(StartingPoint + plowOffset + GetTileOffset(currTile, OffsetNextRight, OffsetNextLeft, SubOffsetNextRight, SubOffsetNextLeft));
 
 						SubStatus++;
 
@@ -815,8 +852,9 @@ namespace Ohm.FarmVille {
 
 						if (Status == 4 && SubStatus == 0) {
 							//Select Delete Tool
-							MoveAndWait(ToolPlace(TOOL_CURSOR), DELAY_FAST);
-							ClickAndWait(ToolPlace(TOOL_DELETE), DELAY_FAST);
+							//MoveAndWait(ToolPlace(TOOL_CURSOR), DELAY_FAST);
+							//ClickAndWait(ToolPlace(TOOL_DELETE), DELAY_FAST);
+							SelectSubTool(TOOL_CURSOR, SUBTOOL_CURSOR_RECYCLE);
 						}
 
 						currTile = new Point(
@@ -825,10 +863,17 @@ namespace Ohm.FarmVille {
 
 						//Click su casella (delete)
 						//ClickAndWait(StartingPoint + GetTileOffset(currTile, OffsetNextRight, OffsetNextLeft), DELAY_PREV_OP);
-						ClickAndWait(StartingPoint + GetTileOffset(currTile, OffsetNextRight, OffsetNextLeft, SubOffsetNextRight, SubOffsetNextLeft), DELAY_PREV_OP);
+						ClickAndWait(StartingPoint + plowOffset + GetTileOffset(currTile, OffsetNextRight, OffsetNextLeft, SubOffsetNextRight, SubOffsetNextLeft),
+							DELAY_PREV_OP);
 
-						//Conferma cancellazione
-						ClickAt(ConfirmDeletePlace);
+						////Conferma cancellazione
+						//ClickAt(ConfirmDeletePlace);
+						if (Status == 4 && SubStatus == 0) {
+							//Seleziono "Don't Warn on recycle"
+							ClickAndWait(CheckBoxDontWarnOnRecycle, DELAY_FAST);
+							//Convermo il riciclaggio
+							ClickAndWait(ConfirmRecyclePlace, DELAY_PREV_OP);
+						}
 
 						SubStatus++;
 
@@ -1047,8 +1092,6 @@ namespace Ohm.FarmVille {
 			gbSeeds.Enabled = cbSeed.Checked;
 		}
 
-		#region Metodi privati/protetti
-
 		private void FarmVilleTrainer_Activated(object sender, EventArgs e) {
 			if (mainStatus == ToolType.Bale) {
 				doStopTrick();
@@ -1058,6 +1101,29 @@ namespace Ohm.FarmVille {
 				doStopSoyTrick();
 			}
 		}
+
+		private void cmdAbout_Click(object sender, EventArgs e) {
+			AboutBox ab;
+			ab = new AboutBox();
+			ab.ShowDialog(this);
+		}
+
+		private void cbToolSize_SelectedIndexChanged(object sender, EventArgs e) {
+			int toolSize;
+			toolSize = ((ComboBox)sender).SelectedIndex + 1;
+
+			nudHeight.Increment = toolSize;
+			FixNudValue(nudHeight);
+
+			nudWidth.Increment = toolSize;
+			FixNudValue(nudWidth);
+		}
+
+		private void NumericUpDown_Leave(object sender, EventArgs e) {
+			FixNudValue((NumericUpDown)sender);
+		}
+
+		#region Metodi privati/protetti
 
 		private void disableLayout(ToolType request) {
 			this.SuspendLayout();
@@ -1147,34 +1213,6 @@ namespace Ohm.FarmVille {
 			enableLayout(ToolType.PSD);
 		}
 
-		#endregion
-
-		private void cmdAbout_Click(object sender, EventArgs e) {
-			AboutBox ab;
-			ab = new AboutBox();
-			ab.ShowDialog(this);
-		}
-
-		private void cbToolSize_SelectedIndexChanged(object sender, EventArgs e) {
-			int toolSize;
-			decimal newVal;
-			toolSize = ((ComboBox)sender).SelectedIndex + 1;
-			nudHeight.Increment = toolSize;
-			//if (nudHeight.Value % toolSize != 0) {
-			//    newVal = nudHeight.Value + toolSize - (nudHeight.Value % toolSize);
-			//    if (newVal > nudHeight.Maximum) {
-			//        newVal -= toolSize;
-			//    }
-			//    nudHeight.Value = newVal;
-			//}
-			FixNudValue(nudHeight);
-			nudWidth.Increment = toolSize;
-			//if (nudWidth.Value % toolSize != 0) {
-			//    nudWidth.Value += toolSize - (nudWidth.Value % toolSize);
-			//}
-			FixNudValue(nudWidth);
-		}
-
 		private void FixNudValue(NumericUpDown nud) {
 			decimal newVal;
 			if (nud.Value % nud.Increment != 0) {
@@ -1186,13 +1224,7 @@ namespace Ohm.FarmVille {
 			}
 		}
 
-		private void nudWidth_Leave(object sender, EventArgs e) {
-			FixNudValue((NumericUpDown)sender);
-		}
-
-		private void nudHeight_Leave(object sender, EventArgs e) {
-			FixNudValue((NumericUpDown)sender);
-		}
+		#endregion
 
 	}
 }
