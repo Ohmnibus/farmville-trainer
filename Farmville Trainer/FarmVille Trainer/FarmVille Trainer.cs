@@ -17,6 +17,8 @@ namespace Ohm.FarmVille {
 		
 		public abstract class BaseFarmer {
 
+			#region Campi privati/protetti
+
 			protected int Status = 99;
 			protected int SubStatus = 0;
 
@@ -25,6 +27,8 @@ namespace Ohm.FarmVille {
 			protected Timer MyTimer;
 			private MouseHook MyMouseHook;
 			private KeyboardHook MyKeyboardHook;
+
+			#endregion
 
 			#region Intervalli temporali
 
@@ -43,7 +47,7 @@ namespace Ohm.FarmVille {
 			/// <summary>
 			/// Tempo necessario per la selezione di una casella.
 			/// </summary>
-			protected const int DELAY_FAST = 250;
+			protected const int DELAY_FAST = 200;
 			/// <summary>
 			/// Salto all'operazione successiva.
 			/// </summary>
@@ -74,9 +78,40 @@ namespace Ohm.FarmVille {
 			protected const int TOOL_MARKET = 4;
 			protected const int TOOL_GIFT = 5;
 
+			protected const int SUBTOOL_CURSOR_CURSOR = 0;
+			protected const int SUBTOOL_CURSOR_MOVE = 1;
+			protected const int SUBTOOL_CURSOR_RECYCLE = 2;
+
+			protected const int SUBTOOL_PLOW_PLOW = 0;
+			protected const int SUBTOOL_PLOW_HARVESTER = 1;
+			protected const int SUBTOOL_PLOW_SEEDER = 2;
+			protected const int SUBTOOL_PLOW_PLANE = 3;
+			protected const int SUBTOOL_PLOW_TRACTOR = 4;
+
 			protected static Point[] _toolPlaces = new Point[] { 
+				//Multi Tool, Plow Tool, Co-Op
 				new Point(900, 930), new Point(948, 930), new Point(900, 670), //Il "delete" era a 996, 930 ma è stato spostato nel sottomenù cursore
+				//Ribbons, Market, Gifts
 				new Point(900, 988), new Point(948, 988), new Point(996, 988)
+			};
+
+			protected static Point[][] _toolSubPlaces = new Point[][] { 
+				new Point[] { //Multi Tool
+					new Point(900, 865), //Multi Tool
+					new Point(900, 800), //Move Tool
+					new Point(900, 735)  //Recycle
+				},
+				new Point[] { //Plow Tool
+					new Point(948, 865), //Plow
+					new Point(948, 800), //Harvester
+					new Point(948, 735), //Seeder
+					new Point(948, 670), //Plane
+					new Point(948, 600)  //Tractor
+				},
+				new Point[] {},
+				new Point[] {},
+				new Point[] {},
+				new Point[] {}
 			};
 
 			protected const int MARKET_TYPE_SEEDS = 0;
@@ -88,19 +123,32 @@ namespace Ohm.FarmVille {
 			protected const int MARKET_TYPE_VEICHLES = 6;
 
 			protected static Point[] _marketTypePlaces = new Point[] { 
-				new Point(328, 328), new Point(400, 328), new Point(500, 328), new Point(600, 328), new Point(700, 328), new Point(800, 328), new Point(938, 328)
+				new Point(328, 328), //Seeds
+				new Point(400, 328), //Trees
+				new Point(500, 328), //Animals
+				new Point(600, 328), //Buildings
+				new Point(700, 328), //Decorations
+				new Point(800, 328), //Upgrade
+				new Point(938, 328)  //Vehicles
 			};
 
-			protected static Size OffsetNextRight = new Size(20, 9); //12/05/2010: Cambio dimensioni da 25, 12 a 20, 10
-			protected static Size SubOffsetNextRight = new Size(0, 6); //Decimi da aggiungere a OffsetNextRight
-			protected static Size OffsetNextLeft = new Size(-20, 9); //12/05/2010: Cambio dimensioni da 25, 12 a 20, 10
-			protected static Size SubOffsetNextLeft = new Size(0, 6); //Decimi da aggiungere a OffsetNextLeft
+			//12/05/2010: Cambio dimensioni da 25, 12 a 20, 9.6
+			//04/07/2010: Cambio dimensioni da 20, 9.6 a 15, 7.2
+			protected static Size OffsetNextRight = new Size(15, 7);
+			protected static Size SubOffsetNextRight = new Size(0, 2); //Decimi da aggiungere a OffsetNextLeft
+			protected static Size OffsetNextLeft = new Size(-15, 7);
+			protected static Size SubOffsetNextLeft = new Size(0, 2); //Decimi da aggiungere a OffsetNextLeft
 
 			protected static Size OffsetNextBaleRight = new Size(25, 12);
 			protected static Size OffsetNextBaleLeft = new Size(-25, 12);
 
 			protected static Size OffsetSell = new Size(32, 32);
 			protected static Size OffsetSelectBale = new Size(0, -22);
+
+			/// <summary>
+			/// 1x1 size element to adjust zero based points
+			/// </summary>
+			protected static Size adj = new Size(1, 1);
 
 			protected static Point _marketNextPagePlace = new Point(972, 546);
 
@@ -243,6 +291,10 @@ namespace Ohm.FarmVille {
 				return _toolPlaces[tool] + botMod;
 			}
 
+			protected Point ToolSubPlace(int tool, int subTool) {
+				return _toolSubPlaces[tool][subTool] + botMod;
+			}
+
 			protected Point MarketTypePlace(int marketType) {
 				return _marketTypePlaces[marketType] + midMod;
 			}
@@ -257,13 +309,21 @@ namespace Ohm.FarmVille {
 			/// <param name="marketType">Market type, i.e. <c>MARKET_TYPE_SEEDS</c>.</param>
 			/// <param name="marketPage">Market page, starting from 1.</param>
 			/// <param name="marketItem">Market item (1-8).</param>
-			protected void ChooseMarketItem(int marketType, int marketPage, int marketItem) {
-				
-				//Open market
-				ClickAndWait(ToolPlace(TOOL_MARKET), DELAY_STD_OP);
+			protected void ChooseMarketItem(int marketType, int marketPage, int marketItem, bool useHarvester) {
 
-				//Choose market type
-				ClickAndWait(MarketTypePlace(marketType), DELAY_STD_OP);
+				if (useHarvester) {
+					//Select Seeder
+					SelectSubTool(TOOL_PLOW, SUBTOOL_PLOW_SEEDER);
+
+					//Wait for the market to open
+					System.Threading.Thread.Sleep(DELAY_STD_OP);
+				} else {
+					//Open market
+					ClickAndWait(ToolPlace(TOOL_MARKET), DELAY_STD_OP);
+
+					//Choose market type
+					ClickAndWait(MarketTypePlace(marketType), DELAY_STD_OP);
+				}
 
 				//Choose right page
 				MouseSimulator.X = MarketNextPagePlace.X;
@@ -321,7 +381,7 @@ namespace Ohm.FarmVille {
 			/// <summary>
 			/// Get the offset of a tile.
 			/// </summary>
-			/// <param name="tilePos">Tile index.</param>
+			/// <param name="tileIndex">Tile index.</param>
 			/// <param name="offsetRight">Offset for the right tile.</param>
 			/// <param name="offsetLeft">Offset for the left tile.</param>
 			/// <returns></returns>
@@ -334,14 +394,34 @@ namespace Ohm.FarmVille {
 			/// <summary>
 			/// Get the offset of a tile.
 			/// </summary>
-			/// <param name="tilePos">Tile index.</param>
+			/// <param name="tileIndex">Tile index.</param>
 			/// <param name="offsetRight">Offset for the right tile.</param>
 			/// <param name="offsetLeft">Offset for the left tile.</param>
+			/// <param name="subOffsetLeft">Tenth of offset for the right tile.</param>
+			/// <param name="subOffsetRight">Tenth of offset for the left tile.</param>
 			/// <returns></returns>
 			protected Size GetTileOffset(Point tileIndex, Size offsetRight, Size offsetLeft, Size subOffsetRight, Size subOffsetLeft) {
 				return new Size(
 					(offsetRight.Width * tileIndex.X) + (int)(subOffsetRight.Width * tileIndex.X * 0.1) + (offsetLeft.Width * tileIndex.Y) + (int)(subOffsetLeft.Width * tileIndex.Y * 0.1),
 					(offsetRight.Height * tileIndex.X) + (int)(subOffsetRight.Height * tileIndex.X * 0.1) + (offsetLeft.Height * tileIndex.Y) + (int)(subOffsetLeft.Height * tileIndex.Y * 0.1));
+			}
+
+			/// <summary>
+			/// Seleziona uno strumento cliccando direttamente sulla radice
+			/// </summary>
+			/// <param name="tool"></param>
+			protected void SelectTool(int tool) {
+				ClickAndWait(ToolPlace(tool), DELAY_FAST);
+			}
+
+			/// <summary>
+			/// Seleziona uno strumento passando sulla radice e cliccando il sottostrumento
+			/// </summary>
+			/// <param name="tool"></param>
+			/// <param name="subTool"></param>
+			protected void SelectSubTool(int tool, int subTool) {
+				MoveAndWait(ToolPlace(tool), DELAY_FAST);
+				ClickAndWait(ToolSubPlace(tool, subTool), DELAY_FAST);
 			}
 
 			#region Procedure errate di conversione coordinate
@@ -385,6 +465,7 @@ namespace Ohm.FarmVille {
 			/// Width is for NO->SE (\) direction, Height for NE->SO (/) direction.
 			/// </summary>
 			public Size FieldSize = new Size(1, 1);
+			public int ToolSize = 1;
 
 			public Point[] Exclude;
 
@@ -443,10 +524,22 @@ namespace Ohm.FarmVille {
 
 						if (Status == 1 && SubStatus == 0) {
 							//Select harvest tool (cursor)
-							ClickAndWait(ToolPlace(TOOL_CURSOR), DELAY_FAST);
+							//ClickAndWait(ToolPlace(TOOL_CURSOR), DELAY_FAST);
+							if (ToolSize > 1) {
+								//Extra size -> Select Harvester
+								SelectSubTool(TOOL_PLOW, SUBTOOL_PLOW_HARVESTER);
+							} else {
+								SelectSubTool(TOOL_CURSOR, SUBTOOL_CURSOR_CURSOR);
+							}
 						} else if (Status == 2 && SubStatus == 0) {
 							//Select plow tool
-							ClickAndWait(ToolPlace(TOOL_PLOW), DELAY_FAST);
+							//ClickAndWait(ToolPlace(TOOL_PLOW), DELAY_FAST);
+							if (ToolSize > 1) {
+								//Extra size -> Select Tractor
+								SelectSubTool(TOOL_PLOW, SUBTOOL_PLOW_TRACTOR);
+							} else {
+								SelectSubTool(TOOL_PLOW, SUBTOOL_PLOW_PLOW);
+							}
 						}
 
 						currTile = new Point(
@@ -455,8 +548,10 @@ namespace Ohm.FarmVille {
 						
 						skip = false;
 
+						//If tool size is more than 1x1, skip odd rows
+						skip = (currTile.Y % ToolSize != 0);
+
 						//Check if this tile is in the exclude list.
-						Size adj = new Size(1, 1);
 						for (int k = 0; k < Exclude.Length && skip == false; k++) {
 							skip = (Exclude[k] == currTile + adj);
 						}
@@ -466,7 +561,8 @@ namespace Ohm.FarmVille {
 							ClickAt(StartingPoint + GetTileOffset(currTile, OffsetNextRight, OffsetNextLeft, SubOffsetNextRight, SubOffsetNextLeft));
 						}
 
-						SubStatus++;
+						//SubStatus++;
+						SubStatus += ToolSize;
 
 						if (SubStatus < (FieldSize.Width * FieldSize.Height)) {
 							//Other square
@@ -482,7 +578,7 @@ namespace Ohm.FarmVille {
 					case 3:
 						//Select right seed
 
-						ChooseMarketItem(MARKET_TYPE_SEEDS, SeedPage, SeedNumber);
+						ChooseMarketItem(MARKET_TYPE_SEEDS, SeedPage, SeedNumber, (ToolSize > 1));
 
 						//System.Threading.Thread.Sleep(timeDelayOp);
 
@@ -538,7 +634,7 @@ namespace Ohm.FarmVille {
 					case 1:
 						//Seleziono le balle
 
-						ChooseMarketItem(MARKET_TYPE_DECORATIONS, BalePage, BaleNumber);
+						ChooseMarketItem(MARKET_TYPE_DECORATIONS, BalePage, BaleNumber, false);
 
 						//Passo alla fase successiva
 						Status = 2;
@@ -682,7 +778,7 @@ namespace Ohm.FarmVille {
 						break;
 					case 2:
 						//Select "SoyBeans"
-						ChooseMarketItem(MARKET_TYPE_SEEDS, SoyPage, SoyNumber);
+						ChooseMarketItem(MARKET_TYPE_SEEDS, SoyPage, SoyNumber, false);
 
 						Status = 3;
 						SubStatus = 0;
@@ -829,6 +925,8 @@ namespace Ohm.FarmVille {
 				gbSoyBeans.Controls.Add(rbSoyBPage[i]);
 			}
 
+			cbToolSize.SelectedIndex = 0;
+
 			this.ResumeLayout();
 		}
 
@@ -875,8 +973,12 @@ namespace Ohm.FarmVille {
 
 				#region Load form data to "farmer"
 
+				FixNudValue(nudHeight);
+				FixNudValue(nudWidth);
+
 				farmer.FieldSize.Width = (int)nudWidth.Value;
 				farmer.FieldSize.Height = (int)nudHeight.Value;
+				farmer.ToolSize = cbToolSize.SelectedIndex + 1;
 
 				if (txtExclusion.Text.Length > 0) {
 					try {
@@ -1051,6 +1153,45 @@ namespace Ohm.FarmVille {
 			AboutBox ab;
 			ab = new AboutBox();
 			ab.ShowDialog(this);
+		}
+
+		private void cbToolSize_SelectedIndexChanged(object sender, EventArgs e) {
+			int toolSize;
+			decimal newVal;
+			toolSize = ((ComboBox)sender).SelectedIndex + 1;
+			nudHeight.Increment = toolSize;
+			//if (nudHeight.Value % toolSize != 0) {
+			//    newVal = nudHeight.Value + toolSize - (nudHeight.Value % toolSize);
+			//    if (newVal > nudHeight.Maximum) {
+			//        newVal -= toolSize;
+			//    }
+			//    nudHeight.Value = newVal;
+			//}
+			FixNudValue(nudHeight);
+			nudWidth.Increment = toolSize;
+			//if (nudWidth.Value % toolSize != 0) {
+			//    nudWidth.Value += toolSize - (nudWidth.Value % toolSize);
+			//}
+			FixNudValue(nudWidth);
+		}
+
+		private void FixNudValue(NumericUpDown nud) {
+			decimal newVal;
+			if (nud.Value % nud.Increment != 0) {
+				newVal = nud.Value + nud.Increment - (nud.Value % nud.Increment);
+				if (newVal > nud.Maximum) {
+					newVal -= nud.Increment;
+				}
+				nud.Value = newVal;
+			}
+		}
+
+		private void nudWidth_Leave(object sender, EventArgs e) {
+			FixNudValue((NumericUpDown)sender);
+		}
+
+		private void nudHeight_Leave(object sender, EventArgs e) {
+			FixNudValue((NumericUpDown)sender);
 		}
 
 	}
