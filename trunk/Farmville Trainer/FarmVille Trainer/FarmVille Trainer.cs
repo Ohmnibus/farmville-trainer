@@ -47,7 +47,7 @@ namespace Ohm.FarmVille {
 			/// <summary>
 			/// Tempo necessario per la selezione di una casella.
 			/// </summary>
-			protected const int DELAY_FAST = 200;
+			protected const int DELAY_FAST = 250;
 			/// <summary>
 			/// Salto all'operazione successiva.
 			/// </summary>
@@ -318,6 +318,697 @@ namespace Ohm.FarmVille {
 
 			#region Private and protected method
 
+			#region Rimuovi popup
+
+			#region Colors
+
+			/// <summary>
+			/// PopUp border color.
+			/// </summary>
+			protected static Color PopUpBorderColor = Color.FromArgb(112, 84, 58);
+
+			/// <summary>
+			/// Green Button color.
+			/// </summary>
+			protected static Color GreenButtonColor = Color.FromArgb(148, 188, 65);
+
+			/// <summary>
+			/// Red Button color.
+			/// </summary>
+			protected static Color RedButtonColor = Color.FromArgb(234, 21, 21);
+
+			/// <summary>
+			/// Dim Red Button color.
+			/// </summary>
+			protected static Color DimRedButtonColor = Color.FromArgb(195, 70, 58);
+
+			/// <summary>
+			/// Fuel Dialog red button.
+			/// </summary>
+			protected static Color FuelRedButtonColor = DimRedButtonColor;
+
+			/// <summary>
+			/// Fuel Dialog green button.
+			/// </summary>
+			protected static Color FuelGreenButtonColor = GreenButtonColor;
+
+			/// <summary>
+			/// Share Dialog red button.
+			/// </summary>
+			protected static Color ShareRedButtonColor = RedButtonColor;
+
+			/// <summary>
+			/// Share Dialog green button.
+			/// </summary>
+			protected static Color ShareGreenButtonColor = GreenButtonColor;
+
+			/// <summary>
+			/// Out Of Sync Dialog green button.
+			/// </summary>
+			protected static Color OutOfSyncGreenButtonColor = GreenButtonColor;
+
+			/// <summary>
+			/// Share Bushel Dialog green button.
+			/// </summary>
+			protected static Color ShareBushelGreenButtonColor = GreenButtonColor;
+
+			/// <summary>
+			/// Share Bushel Dialog red button.
+			/// </summary>
+			protected static Color ShareBushelRedButtonColor = DimRedButtonColor;
+
+			/// <summary>
+			/// Report Bushel Dialog green button.
+			/// </summary>
+			protected static Color ReportBushelButtonColor = GreenButtonColor;
+
+			/// <summary>
+			/// Celebrate Dialog green button.
+			/// </summary>
+			protected static Color CelebrateGreenButtonColor = GreenButtonColor;
+
+			/// <summary>
+			/// Celebrate Dialog red button.
+			/// </summary>
+			protected static Color CelebrateRedButtonColor = DimRedButtonColor;
+
+			/// <summary>
+			/// LevelUp Dialog green button.
+			/// </summary>
+			protected static Color LevelUpGreenButtonColor = GreenButtonColor;
+
+			/// <summary>
+			/// LevelUp Dialog red button.
+			/// </summary>
+			protected static Color LevelUpRedButtonColor = DimRedButtonColor;
+
+			#endregion
+
+			#region Probe Points
+
+			/// <summary>
+			/// List of points to probe for a base PopUp.
+			/// </summary>
+			protected static Point[] BasePopupBorderProbePoints = new Point[] { 
+					/* new Point(455, 376), */ new Point(823, 376), //Removed points that can be overlapped by icon
+					/* new Point(441, 390), */ new Point(837, 390),
+					new Point(441, 630), new Point(837, 630),
+					new Point(455, 643), new Point(823, 643)
+				};
+
+			/// <summary>
+			/// List of points to probe for a large PopUp.
+			/// </summary>
+			protected static Point[] LargePopupBorderProbePoints = new Point[] { 
+					new Point(322, 295), new Point(962, 295),
+					new Point(299, 318), new Point(985, 318),
+					new Point(299, 709), new Point(985, 709),
+					new Point(322, 732), new Point(962, 732)
+				};
+
+			/// <summary>
+			/// List of points to probe for a LevelUp PopUp.
+			/// </summary>
+			protected static Point[] LevelUpPopupBorderProbePoints = new Point[] {
+					new Point(483, 314), new Point(798, 314),
+					new Point(448, 349), new Point(833, 349),
+					new Point(448, 675), new Point(833, 675),
+					new Point(483, 710), new Point(798, 710)
+				};
+
+			/// <summary>
+			/// List of points to probe standard left button.
+			/// </summary>
+			protected static Point[] LeftButtonProbePoints = new Point[] { 
+					new Point(508, 593), new Point(620, 593),
+					new Point(508, 617), new Point(620, 617)
+				};
+
+			/// <summary>
+			/// List of points to probe Fuel Dialog left button.
+			/// </summary>
+			protected static Point[] FuelLeftButtonProbePoints = new Point[] { 
+					new Point(517, 610), new Point(634, 610),
+					new Point(517, 634), new Point(634, 634)
+				};
+
+			/// <summary>
+			/// List of points to probe Fuel Dialog right button.
+			/// </summary>
+			protected static Point[] FuelRightButtonProbePoints = new Point[] { 
+					new Point(656, 610), new Point(767, 610),
+					new Point(656, 634), new Point(767, 634)
+				};
+
+			/// <summary>
+			/// List of points to probe item share Dialog left button.
+			/// </summary>
+			protected static Point[] ShareLeftButtonProbePoints = new Point[] { 
+					new Point(535, 594), new Point(647, 594),
+					new Point(535, 618), new Point(647, 618)
+				};
+
+			/// <summary>
+			/// List of points to probe item share Dialog right button.
+			/// </summary>
+			protected static Point[] ShareRightButtonProbePoints = new Point[] { 
+					new Point(673, 593), new Point(786, 593),
+					new Point(673, 618), new Point(786, 618)
+				};
+
+			/// <summary>
+			/// List of points to probe item celebrate Dialog left button.
+			/// </summary>
+			protected static Point[] CelebrateLeftButtonProbePoints = new Point[] { 
+					new Point(508, 593), new Point(620, 593),
+					new Point(508, 617), new Point(620, 617)
+				};
+
+			/// <summary>
+			/// List of points to probe item celebrate Dialog right button.
+			/// </summary>
+			protected static Point[] CelebrateRightButtonProbePoints = new Point[] { 
+					new Point(648, 593), new Point(759, 593),
+					new Point(648, 616), new Point(759, 616)
+				};
+
+			/// <summary>
+			/// List of points to probe Out of Sync Dialog left button.
+			/// </summary>
+			protected static Point[] OutOfSyncLeftButtonProbePoints = new Point[] { 
+					new Point(508, 593), new Point(620, 593),
+					new Point(508, 617), new Point(620, 617)
+				};
+
+			/// <summary>
+			/// List of points to probe Share Bushel Dialog right button.
+			/// </summary>
+			protected static Point[] ShareBushelRightButtonProbePoints = new Point[] { 
+					new Point(654, 696), new Point(654, 719),
+					new Point(765, 696), new Point(765, 719)
+				};
+
+			/// <summary>
+			/// List of points to probe Share Bushel Dialog left button.
+			/// </summary>
+			protected static Point[] ShareBushelLeftButtonProbePoints = new Point[] { 
+					new Point(517, 695), new Point(517, 718),
+					new Point(628, 695), new Point(628, 718)
+				};
+
+			/// <summary>
+			/// List of points to probe Bushel Report Dialog button.
+			/// </summary>
+			protected static Point[] ReportBushelButtonProbePoints = new Point[] { 
+					new Point(593, 696), new Point(593, 719),
+					new Point(704, 696), new Point(704, 719)
+				};
+
+			/// <summary>
+			/// List of points to probe LevelUp Dialog right button.
+			/// </summary>
+			protected static Point[] LevelUpRightButtonProbePoints = new Point[] { 
+					new Point(653, 671), new Point(764, 671),
+					new Point(653, 694), new Point(764, 694)
+				};
+
+			/// <summary>
+			/// List of points to probe LevelUp Dialog left button.
+			/// </summary>
+			protected static Point[] LevelUpLeftButtonProbePoints = new Point[] { 
+					new Point(519, 671), new Point(631, 671),
+					new Point(519, 695), new Point(631, 695)
+				};
+
+			#endregion
+
+			/// <summary>
+			/// Type of dialogs.
+			/// </summary>
+			enum DialogType {
+				/// <summary>
+				/// A dialog has been detected but of unknown type. Should interrupt operations.
+				/// </summary>
+				Unknown,
+				/// <summary>
+				/// No popup detected.
+				/// </summary>
+				None,
+				ShareFuel,
+				ShareItem,
+				Celebrate,
+				OutOfSync,
+				SavingFarm,
+				ShareBushel,
+				ReportBushel,
+				LevelUp
+			}
+
+			/// <summary>
+			/// Dismiss a popup.
+			/// </summary>
+			/// <returns><c>true</c> if no popup or dismissed popup, <c>false</c> for non dismissable popup.</returns>
+			protected bool DismissPopup() {
+				bool retVal;
+				DialogType dialogType;
+				bool doLoop;
+				bool clicked;
+
+				retVal = true;
+				doLoop = true;
+				clicked = false;
+
+				while (doLoop && IsWorking) {
+					doLoop = false;
+					dialogType = CheckPopup();
+					switch (dialogType) {
+						case DialogType.ShareFuel:
+						case DialogType.ShareItem:
+						case DialogType.Celebrate:
+						case DialogType.ShareBushel:
+						case DialogType.ReportBushel:
+						case DialogType.LevelUp:
+							//Click right button to dismiss.
+							if (!clicked) {
+								ClickAndWait(GetDismissPoint(dialogType), DELAY_PREV_OP);
+								clicked = true;
+							} else {
+								Wait(DELAY_PREV_OP);
+							}
+							doLoop = true;
+							break;
+						case DialogType.OutOfSync:
+							//Out Of Sinc. Cannot dismiss.
+							retVal = false;
+							break;
+						case DialogType.SavingFarm:
+							//Saving farm. Wait and retry.
+							Wait(DELAY_STD_OP);
+							doLoop = true;
+							break;
+						case DialogType.Unknown:
+							//Unknown. Stop.
+							retVal = false;
+							break;
+					}
+				}
+
+				return retVal;
+			}
+
+			/// <summary>
+			/// Check if a popup is popped up and it's type.
+			/// </summary>
+			/// <returns></returns>
+			private DialogType CheckPopup() {
+				DialogType retVal;
+
+				retVal = DialogType.None;
+
+				if (CheckBasePopup()) {
+					if (CheckFuelDialog(false)) {
+						retVal = DialogType.ShareFuel;
+					} else if (CheckShareDialog(false)) {
+						retVal = DialogType.ShareItem;
+					} else if (CheckCelebrateDialog(false)) {
+						retVal = DialogType.Celebrate;
+					} else if (CheckOutOfSyncDialog(false)) {
+						retVal = DialogType.OutOfSync;
+					} else {
+						retVal = DialogType.SavingFarm;
+					}
+				} else if (CheckLargePopup()) {
+					if (CheckShareBushel(false)) {
+						retVal = DialogType.ShareBushel;
+					} else if (CheckReportBushel(false)) {
+						retVal = DialogType.ReportBushel;
+					} else {
+						//Unknown.
+						retVal = DialogType.Unknown;
+					}
+				} else if (CheckHighPopup()) {
+					if (CheckLevelUpDialog(false)) {
+						retVal = DialogType.LevelUp;
+					} else {
+						//Unknown.
+						retVal = DialogType.Unknown;
+					}
+				}
+
+				return retVal;
+			}
+
+			/// <summary>
+			/// Given a dialog type, return the point to click to dismiss the popup.
+			/// </summary>
+			/// <param name="dialogType"></param>
+			/// <returns></returns>
+			private Point GetDismissPoint(DialogType dialogType) {
+				Point retVal;
+
+				switch (dialogType) {
+					case DialogType.ShareFuel:
+						retVal = GetMedianPoint(FuelRightButtonProbePoints) + midMod;
+						break;
+					case DialogType.ShareItem:
+						retVal = GetMedianPoint(ShareRightButtonProbePoints) + midMod;
+						break;
+					case DialogType.Celebrate:
+						retVal = GetMedianPoint(CelebrateRightButtonProbePoints) + midMod;
+						break;
+					case DialogType.ShareBushel:
+						retVal = GetMedianPoint(ShareBushelRightButtonProbePoints) + midMod;
+						break;
+					case DialogType.ReportBushel:
+						retVal = GetMedianPoint(ReportBushelButtonProbePoints) + midMod;
+						break;
+					case DialogType.LevelUp:
+						retVal = GetMedianPoint(LevelUpRightButtonProbePoints) + midMod;
+						break;
+					default:
+						//No dismiss.
+						retVal = new Point(0, 0);
+						break;
+				}
+
+				return retVal;
+			}
+
+			#region Small PopUp checking
+
+			/// <summary>
+			/// Check if a Base PopUp is popped up.
+			/// </summary>
+			/// <returns></returns>
+			private bool CheckBasePopup() {
+				//Bordo
+				// 455, 376 - 823, 376
+				//441, 390  -  837, 390
+				//441, 630  -  837, 630
+				// 455, 643 - 823, 643
+				//115, 94, 61
+
+				return CheckProbes(BasePopupBorderProbePoints, PopUpBorderColor);
+			}
+
+			/// <summary>
+			/// Check if a fuel dialog is popped up.
+			/// </summary>
+			/// <param name="checkBorder">True to ckeck the border, false otherwise.</param>
+			/// <returns></returns>
+			/// <remarks>
+			/// Fuel dialog is the one with 2 tanks saying "While you where plowing you found some extra fuel!" etc.<br />
+			/// </remarks>
+			private bool CheckFuelDialog(bool checkBorder) {
+				bool retVal = true;
+
+				//Bordo
+				if (checkBorder) {
+					retVal = retVal && CheckProbes(BasePopupBorderProbePoints, PopUpBorderColor);
+				}
+
+				//Tasto sinistro ("Share", verde)
+				retVal = retVal && CheckProbes(FuelLeftButtonProbePoints, FuelGreenButtonColor);
+
+				//Tasto destro ("Cancel", rosso)
+				retVal = retVal && CheckProbes(FuelRightButtonProbePoints, FuelRedButtonColor);
+
+				return retVal;
+			}
+
+			/// <summary>
+			/// Check if a share dialog is popped up.
+			/// </summary>
+			/// <returns></returns>
+			/// <remarks>
+			/// Share dialog is the one shown when an item is found and ask to share the item.
+			/// </remarks>
+			private bool CheckShareDialog(bool checkBorder) {
+				bool retVal = true;
+
+				//Bordo
+				if (checkBorder) {
+					retVal = retVal && CheckProbes(BasePopupBorderProbePoints, PopUpBorderColor);
+				}
+
+				//Tasto sinistro ("Share", verde)
+				retVal = retVal && CheckProbes(ShareLeftButtonProbePoints, ShareGreenButtonColor);
+
+				//Tasto destro ("Cancel", rosso)
+				retVal = retVal && CheckProbes(ShareRightButtonProbePoints, ShareRedButtonColor);
+
+				return retVal;
+			}
+
+			/// <summary>
+			/// Check if a celebrate dialog is popped up.
+			/// </summary>
+			/// <param name="checkBorder"></param>
+			/// <returns></returns>
+			/// <remarks>
+			/// Celebrate dialog is the one shown to celebrate an event like a recipe level-up.
+			/// </remarks>
+			private bool CheckCelebrateDialog(bool checkBorder) {
+				bool retVal = true;
+
+				//Bordo
+				if (checkBorder) {
+					retVal = retVal && CheckProbes(BasePopupBorderProbePoints, PopUpBorderColor);
+				}
+
+				//Tasto sinistro ("Share", verde)
+				retVal = retVal && CheckProbes(CelebrateLeftButtonProbePoints, CelebrateGreenButtonColor);
+
+				//Tasto destro ("Cancel", rosso)
+				retVal = retVal && CheckProbes(CelebrateRightButtonProbePoints, CelebrateRedButtonColor);
+
+				return retVal;
+			}
+
+			/// <summary>
+			/// Check if a Out of Sync dialog is popped up.
+			/// </summary>
+			/// <returns></returns>
+			/// <remarks>
+			/// Share dialog is the one shown when the game need to be reloaded.
+			/// </remarks>
+			private bool CheckOutOfSyncDialog(bool checkBorder) {
+				bool retVal = true;
+
+				//Bordo
+				if (checkBorder) {
+					retVal = retVal && CheckProbes(BasePopupBorderProbePoints, PopUpBorderColor);
+				}
+
+				//Tasto sinistro ("Accept", verde)
+				retVal = retVal && CheckProbes(OutOfSyncLeftButtonProbePoints, OutOfSyncGreenButtonColor);
+
+				return retVal;
+			}
+			
+			#endregion
+
+			#region Large PopUp checking
+
+			/// <summary>
+			/// Check if a Large PopUp is popped up.
+			/// </summary>
+			/// <returns></returns>
+			private bool CheckLargePopup() {
+				//Bordo
+
+				return CheckProbes(LargePopupBorderProbePoints, PopUpBorderColor);
+			}
+
+			/// <summary>
+			/// Check the "Bushel Summary" with share option.
+			/// </summary>
+			/// <param name="checkBorder"></param>
+			/// <returns></returns>
+			private bool CheckShareBushel(bool checkBorder) {
+				bool retVal = true;
+
+				//Bordo
+				if (checkBorder) {
+					retVal = retVal && CheckProbes(BasePopupBorderProbePoints, PopUpBorderColor);
+				}
+
+				//Tasto sinistro ("Share", verde)
+				retVal = retVal && CheckProbes(ShareBushelLeftButtonProbePoints, ShareBushelGreenButtonColor);
+
+				//Tasto destro ("Cancel", rosso)
+				retVal = retVal && CheckProbes(ShareBushelRightButtonProbePoints, ShareBushelRedButtonColor);
+
+				return retVal;
+			}
+
+			/// <summary>
+			/// Check the "Bushel Summary" without share option.
+			/// </summary>
+			/// <param name="checkBorder"></param>
+			/// <returns></returns>
+			private bool CheckReportBushel(bool checkBorder) {
+				bool retVal = true;
+
+				//Bordo
+				if (checkBorder) {
+					retVal = retVal && CheckProbes(BasePopupBorderProbePoints, PopUpBorderColor);
+				}
+
+				//Tasto centrale ("Okay", verde)
+				retVal = retVal && CheckProbes(ReportBushelButtonProbePoints, ReportBushelButtonColor);
+
+				return retVal;
+			}
+
+			#endregion
+
+			#region LevelUp PopUp checking
+
+			/// <summary>
+			/// Check if a High PopUp is popped up.
+			/// </summary>
+			/// <returns></returns>
+			private bool CheckHighPopup() {
+				//Bordo
+
+				return CheckProbes(LevelUpPopupBorderProbePoints, PopUpBorderColor);
+			}
+
+			/// <summary>
+			/// Check if a LevelUp dialog is popped up.
+			/// </summary>
+			/// <param name="checkBorder"></param>
+			/// <returns></returns>
+			/// <remarks>
+			/// LevelUp dialog is the one shown to celebrate a farmer level-up.
+			/// </remarks>
+			private bool CheckLevelUpDialog(bool checkBorder) {
+				bool retVal = true;
+
+				//Bordo
+				if (checkBorder) {
+					retVal = retVal && CheckProbes(LevelUpPopupBorderProbePoints, PopUpBorderColor);
+				}
+
+				//Tasto sinistro ("Share", verde)
+				retVal = retVal && CheckProbes(LevelUpLeftButtonProbePoints, LevelUpGreenButtonColor);
+
+				//Tasto destro ("Cancel", rosso)
+				retVal = retVal && CheckProbes(LevelUpRightButtonProbePoints, LevelUpRedButtonColor);
+
+				return retVal;
+			}
+
+			#endregion
+
+			/// <summary>
+			/// Check if a given set of points are of the given color.
+			/// </summary>
+			/// <param name="probes">Point to check.</param>
+			/// <param name="color">Color to match.</param>
+			/// <returns><c>true</c> if all probes are of the given color.</returns>
+			private bool CheckProbes(Point[] probes, Color color) {
+				bool retVal;
+				Color[] probedColors;
+
+				retVal = true;
+
+				probedColors = GetPixelsColors(probes);
+
+				for (int i = 0; i < probedColors.Length && retVal; i++) {
+					retVal = retVal && probedColors[i].Equals(color);
+				}
+
+				return retVal;
+			}
+
+			/// <summary>
+			/// Get the color of a series of pixels.
+			/// </summary>
+			/// <param name="locations">Series of pixels to probe.</param>
+			/// <returns></returns>
+			private Color[] GetPixelsColors(Point[] locations) {
+				Color[] retVal;
+				Point topLeft;
+				Point botRight;
+				Size totalSize;
+				Bitmap img;
+				Graphics g;
+
+				topLeft = new Point(locations[0].X, locations[0].Y);
+				botRight = new Point(locations[0].X, locations[0].Y);
+
+				for (int i = 1; i < locations.Length; i++) {
+					if (topLeft.X > locations[i].X) {
+						topLeft.X = locations[i].X;
+					}
+
+					if (topLeft.Y > locations[i].Y) {
+						topLeft.Y = locations[i].Y;
+					}
+
+					if (botRight.X < locations[i].X) {
+						botRight.X = locations[i].X;
+					}
+
+					if (botRight.Y < locations[i].Y) {
+						botRight.Y = locations[i].Y;
+					}
+				}
+
+				totalSize = new Size((botRight.X - topLeft.X) + 1, (botRight.Y - topLeft.Y) + 1);
+
+				if (totalSize.Width * totalSize.Height <= 120000) {
+					//Capture screen once for all
+					img = new Bitmap(totalSize.Width, totalSize.Height);
+					g = Graphics.FromImage(img);
+					g.CopyFromScreen(topLeft + midMod, new Point(0, 0), totalSize);
+
+					retVal = new Color[locations.Length];
+					for (int i = 0; i < locations.Length; i++) {
+						retVal[i] = img.GetPixel(locations[i].X - topLeft.X, locations[i].Y - topLeft.Y);
+					}
+				} else {
+					//Capture screen one pixel at time
+
+					img = new Bitmap(1, 1);
+					g = Graphics.FromImage(img);
+
+					retVal = new Color[locations.Length];
+
+					for (int i = 0; i < locations.Length; i++) {
+						g.CopyFromScreen(locations[i] + midMod, new Point(0, 0), new Size(1, 1));
+						retVal[i] = img.GetPixel(0, 0);
+					}
+				}
+
+				return retVal;
+			}
+
+			/// <summary>
+			/// Get the median point of a set of points.
+			/// </summary>
+			/// <param name="points"></param>
+			/// <returns></returns>
+			private Point GetMedianPoint(Point[] points) {
+				Point retVal;
+
+				retVal = new Point(0,0);
+
+				for (int i = 0; i < points.Length; i++) {
+					retVal.X += points[i].X;
+					retVal.Y += points[i].Y;
+				}
+
+				retVal.X /= points.Length;
+				retVal.Y /= points.Length;
+
+				return retVal;
+			}
+
+			#endregion
+
 			/// <summary>
 			/// Choose a Market Item.
 			/// </summary>
@@ -546,22 +1237,34 @@ namespace Ohm.FarmVille {
 						//Harvest, plow, put seed
 
 						if (Status == 1 && SubStatus == 0) {
-							//Select harvest tool (cursor)
-							//ClickAndWait(ToolPlace(TOOL_CURSOR), DELAY_FAST);
-							if (ToolSize > 1) {
-								//Extra size -> Select Harvester
-								SelectSubTool(TOOL_PLOW, SUBTOOL_PLOW_HARVESTER);
+							if (DismissPopup()) {
+								//Select harvest tool (cursor)
+								//ClickAndWait(ToolPlace(TOOL_CURSOR), DELAY_FAST);
+								if (ToolSize > 1) {
+									//Extra size -> Select Harvester
+									SelectSubTool(TOOL_PLOW, SUBTOOL_PLOW_HARVESTER);
+								} else {
+									SelectSubTool(TOOL_CURSOR, SUBTOOL_CURSOR_CURSOR);
+								}
 							} else {
-								SelectSubTool(TOOL_CURSOR, SUBTOOL_CURSOR_CURSOR);
+								//Cannot dismiss popup. Terminate execution.
+								Stop();
+								break;
 							}
 						} else if (Status == 2 && SubStatus == 0) {
-							//Select plow tool
-							//ClickAndWait(ToolPlace(TOOL_PLOW), DELAY_FAST);
-							if (ToolSize > 1) {
-								//Extra size -> Select Tractor
-								SelectSubTool(TOOL_PLOW, SUBTOOL_PLOW_TRACTOR);
+							if (DismissPopup()) {
+								//Select plow tool
+								//ClickAndWait(ToolPlace(TOOL_PLOW), DELAY_FAST);
+								if (ToolSize > 1) {
+									//Extra size -> Select Tractor
+									SelectSubTool(TOOL_PLOW, SUBTOOL_PLOW_TRACTOR);
+								} else {
+									SelectSubTool(TOOL_PLOW, SUBTOOL_PLOW_PLOW);
+								}
 							} else {
-								SelectSubTool(TOOL_PLOW, SUBTOOL_PLOW_PLOW);
+								//Cannot dismiss popup. Terminate execution.
+								Stop();
+								break;
 							}
 						}
 
@@ -580,8 +1283,14 @@ namespace Ohm.FarmVille {
 						}
 
 						if (!skip) {
-							//ClickAt(StartingPoint + GetTileOffset(currTile, OffsetNextRight, OffsetNextLeft));
-							ClickAt(StartingPoint + GetTileOffset(currTile, OffsetNextRight, OffsetNextLeft, SubOffsetNextRight, SubOffsetNextLeft));
+							if (DismissPopup()) {
+								//ClickAt(StartingPoint + GetTileOffset(currTile, OffsetNextRight, OffsetNextLeft));
+								ClickAt(StartingPoint + GetTileOffset(currTile, OffsetNextRight, OffsetNextLeft, SubOffsetNextRight, SubOffsetNextLeft));
+							} else {
+								//Cannot dismiss popup. Terminate execution.
+								Stop();
+								break;
+							}
 						}
 
 						//SubStatus++;
@@ -601,7 +1310,13 @@ namespace Ohm.FarmVille {
 					case 3:
 						//Select right seed
 
-						ChooseMarketItem(MARKET_TYPE_SEEDS, SeedPage, SeedNumber, (ToolSize > 1));
+						if (DismissPopup()) {
+							ChooseMarketItem(MARKET_TYPE_SEEDS, SeedPage, SeedNumber, (ToolSize > 1));
+						} else {
+							//Cannot dismiss popup. Terminate execution.
+							Stop();
+							break;
+						}
 
 						//System.Threading.Thread.Sleep(timeDelayOp);
 
