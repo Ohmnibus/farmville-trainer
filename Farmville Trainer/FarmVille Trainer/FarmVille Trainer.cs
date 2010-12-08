@@ -47,7 +47,7 @@ namespace Ohm.FarmVille {
 			/// <summary>
 			/// Tempo necessario per la selezione di una casella.
 			/// </summary>
-			protected const int DELAY_FAST = 250;
+			protected const int DELAY_FAST = 250; //250
 			/// <summary>
 			/// Salto all'operazione successiva.
 			/// </summary>
@@ -83,10 +83,11 @@ namespace Ohm.FarmVille {
 			protected const int SUBTOOL_CURSOR_RECYCLE = 2;
 
 			protected const int SUBTOOL_PLOW_PLOW = 0;
-			protected const int SUBTOOL_PLOW_HARVESTER = 1;
-			protected const int SUBTOOL_PLOW_SEEDER = 2;
-			protected const int SUBTOOL_PLOW_PLANE = 3;
-			protected const int SUBTOOL_PLOW_TRACTOR = 4;
+			protected const int SUBTOOL_PLOW_MULTITOOL = 1;
+			protected const int SUBTOOL_PLOW_HARVESTER = 2;
+			protected const int SUBTOOL_PLOW_SEEDER = 3;
+			protected const int SUBTOOL_PLOW_PLANE = 4;
+			protected const int SUBTOOL_PLOW_TRACTOR = 5;
 
 			protected static Point[] _toolPlaces = new Point[] { 
 				//Multi Tool, Plow Tool, Co-Op
@@ -103,10 +104,11 @@ namespace Ohm.FarmVille {
 				},
 				new Point[] { //Plow Tool
 					new Point(948, 865), //Plow
-					new Point(948, 800), //Harvester
-					new Point(948, 735), //Seeder
-					new Point(948, 670), //Plane
-					new Point(948, 600)  //Tractor
+					new Point(948, 800), //Multitool
+					new Point(948, 735), //Harvester
+					new Point(948, 670), //Seeder
+					new Point(948, 600), //Plane
+					new Point(948, 535)  //Tractor
 				},
 				new Point[] {},
 				new Point[] {},
@@ -114,30 +116,30 @@ namespace Ohm.FarmVille {
 				new Point[] {}
 			};
 
-			protected const int MARKET_TYPE_SEEDS = 0;
-			protected const int MARKET_TYPE_TREES = 1;
+			protected const int MARKET_TYPE_SPECIALS = 0;
+			protected const int MARKET_TYPE_SEEDS_TREES = 1;
 			protected const int MARKET_TYPE_ANIMALS = 2;
 			protected const int MARKET_TYPE_BUILDINGS = 3;
 			protected const int MARKET_TYPE_DECORATIONS = 4;
-			protected const int MARKET_TYPE_EXPANDFARM = 5;
-			protected const int MARKET_TYPE_VEICHLES = 6;
+			protected const int MARKET_TYPE_FARM_AIDES = 5;
+			protected const int MARKET_TYPE_CLOTES = 6;
 
 			protected static Point[] _marketTypePlaces = new Point[] { 
-				new Point(328, 328), //Seeds
-				new Point(400, 328), //Trees
-				new Point(500, 328), //Animals
-				new Point(600, 328), //Buildings
-				new Point(700, 328), //Decorations
-				new Point(800, 328), //Upgrade
-				new Point(938, 328)  //Vehicles
+				new Point(350, 320), //Specials
+				new Point(450, 320), //Seeds & Trees
+				new Point(550, 320), //Animals
+				new Point(640, 320), //Buildings
+				new Point(740, 320), //Decorations
+				new Point(840, 320), //Farm Aides
+				new Point(930, 320)  //Clotes
 			};
 
 			//12/05/2010: Cambio dimensioni da 25, 12 a 20, 9.6
 			//04/07/2010: Cambio dimensioni da 20, 9.6 a 15, 7.2
 			protected static Size OffsetNextRight = new Size(15, 7);
-			protected static Size SubOffsetNextRight = new Size(0, 2); //Decimi da aggiungere a OffsetNextLeft
+			protected static Size SubOffsetNextRight = new Size(0, 250); //Millesimi da aggiungere a OffsetNextRight
 			protected static Size OffsetNextLeft = new Size(-15, 7);
-			protected static Size SubOffsetNextLeft = new Size(0, 2); //Decimi da aggiungere a OffsetNextLeft
+			protected static Size SubOffsetNextLeft = new Size(0, 250); //Millesimi da aggiungere a OffsetNextLeft
 
 			protected static Size OffsetNextBaleRight = new Size(25, 12);
 			protected static Size OffsetNextBaleLeft = new Size(-25, 12);
@@ -150,12 +152,17 @@ namespace Ohm.FarmVille {
 			/// </summary>
 			protected static Size adj = new Size(1, 1);
 
-			protected static Point _marketNextPagePlace = new Point(972, 546);
+			public const int SEED_PER_PAGE = 6;
+			public const int SEED_COLUMN = 3;
+
+			protected static Point _marketNextPagePlace = new Point(990, 500);
+
+			protected static Point _marketSeedSubPagePlace = new Point(445, 358);
 
 			//137, 196
 			protected static Point[] _marketItemPlaces = new Point[] { 
-				new Point(430, 565), new Point(567, 565), new Point(704, 565), new Point(841, 565),
-				new Point(430, 761), new Point(567, 761), new Point(704, 761), new Point(841, 761)
+				new Point(497, 482), new Point(723, 565), new Point(950, 565),
+				new Point(497, 607), new Point(723, 607), new Point(950, 607)
 			};
 
 			//protected static Point _confirmSellPlace = new Point(565, 605);
@@ -224,6 +231,11 @@ namespace Ohm.FarmVille {
 				}
 			}
 
+			protected Point MarketSeedSubPagePlace {
+				get {
+					return _marketSeedSubPagePlace + midMod;
+				}
+			}
 			#endregion
 
 			#region ctor, dtor
@@ -1029,6 +1041,17 @@ namespace Ohm.FarmVille {
 
 					//Choose market type
 					ClickAndWait(MarketTypePlace(marketType), DELAY_STD_OP);
+
+					if (marketType == MARKET_TYPE_SEEDS_TREES) {
+						//HACK: If is the seed&tree page, chose subpage type "Seed"
+
+						//HACK: This button won't work with standard click...
+						MoveAndWait(MarketSeedSubPagePlace, DELAY_FAST);
+						MouseSimulator.MouseDown(MouseButton.Left);
+						Wait(DELAY_FAST);
+						MouseSimulator.MouseUp(MouseButton.Left);
+						Wait(DELAY_FAST * 3);
+					}
 				}
 
 				//Choose right page
@@ -1111,13 +1134,13 @@ namespace Ohm.FarmVille {
 			/// <param name="tileIndex">Tile index.</param>
 			/// <param name="offsetRight">Offset for the right tile.</param>
 			/// <param name="offsetLeft">Offset for the left tile.</param>
-			/// <param name="subOffsetLeft">Tenth of offset for the right tile.</param>
-			/// <param name="subOffsetRight">Tenth of offset for the left tile.</param>
+			/// <param name="subOffsetLeft">Thousandth of offset for the right tile.</param>
+			/// <param name="subOffsetRight">Thousandth of offset for the left tile.</param>
 			/// <returns></returns>
 			protected Size GetTileOffset(Point tileIndex, Size offsetRight, Size offsetLeft, Size subOffsetRight, Size subOffsetLeft) {
 				return new Size(
-					(offsetRight.Width * tileIndex.X) + (int)(subOffsetRight.Width * tileIndex.X * 0.1) + (offsetLeft.Width * tileIndex.Y) + (int)(subOffsetLeft.Width * tileIndex.Y * 0.1),
-					(offsetRight.Height * tileIndex.X) + (int)(subOffsetRight.Height * tileIndex.X * 0.1) + (offsetLeft.Height * tileIndex.Y) + (int)(subOffsetLeft.Height * tileIndex.Y * 0.1));
+					(offsetRight.Width * tileIndex.X) + (int)(subOffsetRight.Width * tileIndex.X * 0.001) + (offsetLeft.Width * tileIndex.Y) + (int)(subOffsetLeft.Width * tileIndex.Y * 0.001),
+					(offsetRight.Height * tileIndex.X) + (int)(subOffsetRight.Height * tileIndex.X * 0.001) + (offsetLeft.Height * tileIndex.Y) + (int)(subOffsetLeft.Height * tileIndex.Y * 0.001));
 			}
 
 			/// <summary>
@@ -1193,19 +1216,23 @@ namespace Ohm.FarmVille {
 			public int SeedNumber;
 
 			void SetNextStatus() {
-				if (DoHarvest && Status < 1) {
+				if (DoHarvest && Status < 1) { //Start Harvesting
 					Status = 1;
 					SubStatus = 0;
 					WaitPrevOp = false;
-				} else if (DoPlow && Status < 2) {
+				} else if (DoPlow && Status < 2) { //Start Plowing
 					Status = 2;
 					SubStatus = 0;
 					WaitPrevOp = DoHarvest;
-				} else if (DoSeed && Status < 3) {
+				} else if (DoSeed && Status < 3) { //Select seed
 					Status = 3;
 					SubStatus = 0;
 					WaitPrevOp = DoHarvest || DoPlow;
-				} else if (DoSeed && Status < 4) {
+				} else if (DoSeed && Status < 4) { //Start seeding
+					Status = 4;
+					SubStatus = 0;
+					WaitPrevOp = DoHarvest || DoPlow;
+				} else if (!DoHarvest && !DoPlow && !DoSeed && Status < 4) { //No op selected. Start clicking with current tool
 					Status = 4;
 					SubStatus = 0;
 					WaitPrevOp = DoHarvest || DoPlow;
@@ -1311,7 +1338,7 @@ namespace Ohm.FarmVille {
 						//Select right seed
 
 						if (DismissPopup()) {
-							ChooseMarketItem(MARKET_TYPE_SEEDS, SeedPage, SeedNumber, (ToolSize > 1));
+							ChooseMarketItem(MARKET_TYPE_SEEDS_TREES, SeedPage, SeedNumber, (ToolSize > 1));
 						} else {
 							//Cannot dismiss popup. Terminate execution.
 							Stop();
@@ -1530,7 +1557,7 @@ namespace Ohm.FarmVille {
 						break;
 					case 2:
 						//Select "SoyBeans"
-						ChooseMarketItem(MARKET_TYPE_SEEDS, SoyPage, SoyNumber, false);
+						ChooseMarketItem(MARKET_TYPE_SEEDS_TREES, SoyPage, SoyNumber, false);
 
 						Status = 3;
 						SubStatus = 0;
@@ -1639,50 +1666,82 @@ namespace Ohm.FarmVille {
 		private RadioButton[] rbBalePage;
 		private RadioButton[] rbSoyBPage;
 
+		Rectangle seedSpace = new Rectangle();
+		Rectangle baleSpace = new Rectangle();
+		Rectangle soySpace = new Rectangle();
+
 		private ToolType mainStatus = ToolType.Wait;
 
 		public FarmVilleTrainer() {
 			InitializeComponent();
 
-			rbSeedPage = new RadioButton[8];
-			rbBalePage = new RadioButton[8];
-			rbSoyBPage = new RadioButton[8];
+			rbSeedPage = new RadioButton[BaseFarmer.SEED_PER_PAGE];
+			rbBalePage = new RadioButton[BaseFarmer.SEED_PER_PAGE];
+			rbSoyBPage = new RadioButton[BaseFarmer.SEED_PER_PAGE];
 
 			this.SuspendLayout();
 
+			seedSpace = new Rectangle();
+			seedSpace.X = 0;
+			seedSpace.Y = nudSeedPage.Location.Y + nudSeedPage.Size.Height + 3;
+			seedSpace.Width = gbSeeds.ClientSize.Width / BaseFarmer.SEED_COLUMN;
+			seedSpace.Height = (gbSeeds.ClientSize.Height - (seedSpace.Top + 3)) / (BaseFarmer.SEED_PER_PAGE / BaseFarmer.SEED_COLUMN);
+
+			baleSpace = new Rectangle();
+			baleSpace.X = 0;
+			baleSpace.Y = nudHayBalePage.Location.Y + nudHayBalePage.Size.Height + 3;
+			baleSpace.Width = gbHayBale.ClientSize.Width / BaseFarmer.SEED_COLUMN;
+			baleSpace.Height = (gbHayBale.ClientSize.Height - (baleSpace.Top + 3)) / (BaseFarmer.SEED_PER_PAGE / BaseFarmer.SEED_COLUMN);
+
+			soySpace = new Rectangle();
+			soySpace.X = 0;
+			soySpace.Y = nudSoyBPage.Location.Y + nudSoyBPage.Size.Height + 3;
+			soySpace.Width = gbSoyBeans.ClientSize.Width / BaseFarmer.SEED_COLUMN;
+			soySpace.Height = (gbSoyBeans.ClientSize.Height - (soySpace.Top + 3)) / (BaseFarmer.SEED_PER_PAGE / BaseFarmer.SEED_COLUMN);
+
 			for (int i = 0; i < rbSeedPage.Length; i++) {
 				rbSeedPage[i] = new RadioButton();
-				rbSeedPage[i].AutoSize = false;
+				rbSeedPage[i].AutoSize = true;
 				rbSeedPage[i].Name = string.Format("rbSeedPage{0:00}", i);
-				rbSeedPage[i].Text = string.Empty;
+				rbSeedPage[i].Text = null;
+				rbSeedPage[i].Margin = new Padding(3);
 				rbSeedPage[i].Checked = i == 0;
-				rbSeedPage[i].Location = new Point(9 + 20 * (i % 4), 44 + 19 * (i / 4));
-				rbSeedPage[i].Size = new Size(14, 13);
 				rbSeedPage[i].UseVisualStyleBackColor = true;
 				
 				gbSeeds.Controls.Add(rbSeedPage[i]);
 
+				rbSeedPage[i].Location = new Point(
+					seedSpace.Left + (seedSpace.Width - rbSeedPage[i].Size.Width) / 2 + seedSpace.Width * (i % BaseFarmer.SEED_COLUMN),
+					seedSpace.Top + (seedSpace.Height - rbSeedPage[i].Size.Height) / 2 + seedSpace.Height * (i / BaseFarmer.SEED_COLUMN));
+
 				rbBalePage[i] = new RadioButton();
-				rbBalePage[i].AutoSize = false;
+				rbBalePage[i].AutoSize = true;
 				rbBalePage[i].Name = string.Format("rbBalePage{0:00}", i);
 				rbBalePage[i].Text = string.Empty;
 				rbBalePage[i].Checked = i == 0;
-				rbBalePage[i].Location = new Point(9 + 20 * (i % 4), 44 + 19 * (i / 4));
-				rbBalePage[i].Size = new Size(14, 13);
+				rbBalePage[i].Location = new Point(9 + 20 * (i % BaseFarmer.SEED_COLUMN), 44 + 19 * (i / BaseFarmer.SEED_COLUMN));
 				rbBalePage[i].UseVisualStyleBackColor = true;
 
 				gbHayBale.Controls.Add(rbBalePage[i]);
 
+				rbBalePage[i].Location = new Point(
+					baleSpace.Left + (baleSpace.Width - rbBalePage[i].Size.Width) / 2 + baleSpace.Width * (i % BaseFarmer.SEED_COLUMN),
+					baleSpace.Top + (baleSpace.Height - rbBalePage[i].Size.Height) / 2 + baleSpace.Height * (i / BaseFarmer.SEED_COLUMN));
+
 				rbSoyBPage[i] = new RadioButton();
-				rbSoyBPage[i].AutoSize = false;
+				rbSoyBPage[i].AutoSize = true;
 				rbSoyBPage[i].Name = string.Format("rbSoyBPage{0:00}", i);
 				rbSoyBPage[i].Text = string.Empty;
 				rbSoyBPage[i].Checked = i == 0;
-				rbSoyBPage[i].Location = new Point(9 + 20 * (i % 4), 44 + 19 * (i / 4));
-				rbSoyBPage[i].Size = new Size(14, 13);
+				rbSoyBPage[i].Location = new Point(9 + 20 * (i % BaseFarmer.SEED_COLUMN), 44 + 19 * (i / BaseFarmer.SEED_COLUMN));
+				//rbSoyBPage[i].Size = new Size(14, 13);
 				rbSoyBPage[i].UseVisualStyleBackColor = true;
 
 				gbSoyBeans.Controls.Add(rbSoyBPage[i]);
+
+				rbSoyBPage[i].Location = new Point(
+					soySpace.Left + (soySpace.Width - rbSoyBPage[i].Size.Width) / 2 + soySpace.Width * (i % BaseFarmer.SEED_COLUMN),
+					soySpace.Top + (soySpace.Height - rbSoyBPage[i].Size.Height) / 2 + soySpace.Height * (i / BaseFarmer.SEED_COLUMN));
 			}
 
 			cbToolSize.SelectedIndex = 0;
